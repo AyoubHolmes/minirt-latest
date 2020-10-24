@@ -27,17 +27,9 @@ t_objects *getLigths(t_objects *obj)
 int			inter(ray r, t_objects *p, double *distance, double *t, int color, t_objects *lights)
 {
 	if (p->id == 4)
-    {
-		*t = equationSphere(r, p, distance);
-		if (*t > 0)
-			return colorSphere(r, *(t_Sphere*)p->content, *t, lights);
-    }
+		return sphereHandler(r, p, distance, t, lights, color);
 	if (p->id == 5)
-    {
-		*t = equationPlane(r, p, distance);
-		if (*t > 0)
-			return colorPlane(r, *(t_Plane*)p->content, *t);
-    }
+		return planeHandler(r, p, distance, t, lights);
 	return color;
 }
 

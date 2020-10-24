@@ -9,17 +9,8 @@
 # include "camera.h"
 # define BUFFER_SIZE 100
 
-// is_vector() -> isnumber() ->isdigit()
-// is_double()
-// ft_atoi()
-// ft_atof()
-// color rgb
-// norminette structure's names
-// data initializer
 /*
 **  ------------------- Structures -----------------------
-
-
 */
 typedef struct	s_window
 {   
@@ -223,11 +214,23 @@ double equationPlane(ray R, t_objects *obj,double *distance);
 */
 
 /*
+**  ---------- Hits Functions ------------
+*/
+
+int sphereHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
+int planeHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights);
+
+/*
+** -----------------------------------------
+*/
+
+/*
 **  ---------- Executers Functions ---------
 */
 
-int colorPlane(ray R, t_Plane pl, double t);
+int colorPlane(ray R, t_Plane pl, double t, t_objects *lights);
 int colorSphere(ray R, t_Sphere sp, double t, t_objects *lights);
+int colorCalculator(ray R, t_vector colorObj, double t, t_objects *lights, t_vector N);
 int	getPixelColor(t_objects *obj, ray r, double *distance, t_objects *lights);
 /*
 ** -----------------------------------------
