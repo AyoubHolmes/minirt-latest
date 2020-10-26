@@ -57,6 +57,7 @@ int			main()
 	t_window			w;
 
 	d = file_parser("test.rt");
+	//objectsDebugger(d);
 	d.cameras = getCams(d);
 	d.cameras = get_cam_next(&d.cameras);
 	d.cameras = get_cam_next(&d.cameras);

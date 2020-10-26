@@ -136,3 +136,40 @@ void pl_insertion(t_data *D, char **data)
     }
 }
  
+void sq_insertion(t_data *D, char **data)
+{
+	char **square_center;
+	char **square_norm;
+	char **color_square;
+    char *size;
+	t_objects *p;
+
+	square_center = ft_split(data[1], ',');
+	square_norm = ft_split(data[2], ',');
+    size = data[3];
+	color_square = ft_split(data[4], ',');
+    if (!D->obj)
+    {
+        if(!(D->obj = (t_objects*)malloc(sizeof(t_objects))))
+            return ;
+		if(!(D->obj->content = (t_Square*)malloc(sizeof(t_Square))))
+            return ;
+        D->obj->content = squareInitialize(square_center, square_norm, color_square, size);
+		D->obj->id = 6;
+        D->obj->next = NULL;
+    }
+    else
+    {
+        p = D->obj;
+        while (p->next != NULL)
+            p = p->next;
+        if(!(p->next = (t_objects*)malloc(sizeof(t_objects))))
+            return ;
+		if(!(p->next->content = (t_Square*)malloc(sizeof(t_Square))))
+            return ;
+        p->next->content = squareInitialize(square_center, square_norm, color_square, size);
+		p->next->id = 6;
+        p->next->next = NULL;
+    }
+}
+ 

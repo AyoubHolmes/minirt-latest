@@ -65,6 +65,18 @@ void planePrinter (t_Plane *P)
     vectorPrinter(P->color_plane);    
 }
 
+void squarePrinter(t_Square *Sq)
+{
+    printf("------------ Square --------\n");
+    printf("-> square center:\n");
+    vectorPrinter(Sq->square_center);
+    printf("-> square norm:\n");
+    vectorPrinter(Sq->square_norm);
+    printf("->square size: %f\n", Sq->size);
+    printf("-> square color:\n");
+    vectorPrinter(Sq->color_square);  
+}
+
 void objectsDebugger(t_data d)
 {
     t_objects *p;
@@ -82,6 +94,8 @@ void objectsDebugger(t_data d)
             spherePrinter((t_Sphere*)(p->content));
         else if (p->id == 5)
             planePrinter((t_Plane*)(p->content));
+        else if (p->id == 6)
+            squarePrinter((t_Square*)(p->content));
         p = p->next;
     }
 

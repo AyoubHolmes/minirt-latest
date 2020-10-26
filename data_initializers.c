@@ -80,3 +80,31 @@ t_Plane *planeInitialize(char **plane_center, char **plane_norm, char **color_pl
 	};
 	return (plane);
 }
+
+t_Square *squareInitialize(char **square_center, char **square_norm, char **color_square, char *size) 
+{
+	t_Square *square;
+
+	if(!(square = (t_Square*)malloc(sizeof(t_Square))))
+		return (0);
+	square->size = strtof(size, NULL);
+	square->square_center = (t_vector)
+	{
+		strtof(square_center[0], NULL),
+		strtof(square_center[1], NULL),
+		strtof(square_center[2], NULL)
+	};
+	square->square_norm = (t_vector)
+	{
+		strtof(square_norm[0], NULL),
+		strtof(square_norm[1], NULL),
+		strtof(square_norm[2], NULL)
+	};
+	square->color_square = (t_vector)
+	{
+		strtof(color_square[0], NULL),
+		strtof(color_square[1], NULL),
+		strtof(color_square[2], NULL)
+	};
+	return (square);
+}

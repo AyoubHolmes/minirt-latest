@@ -39,9 +39,9 @@ void	data_insertion(t_data *D, char **data)
 		sp_insertion(D, data);}
 	else if(i == 5)
 		pl_insertion(D, data);
-	/*else if(i == 4)
+	else if(i == 6)
 		sq_insertion(D, data);
-	else if(i == 5)
+	/*else if(i == 5)
 		cy_insertion(D, data);
 	else if(i == 6)
 		tr_insertion(D, data);*/
