@@ -57,11 +57,11 @@ int			main()
 	t_window			w;
 
 	d = file_parser("test.rt");
-	//objectsDebugger(d);
+	objectsDebugger(d);
 	d.cameras = getCams(d);
 	d.cameras = get_cam_next(&d.cameras);
 	d.cameras = get_cam_next(&d.cameras);
-	cameraPrinter(&d.cameras->cam);
+	//cameraPrinter(&d.cameras->cam);
 	d.lights = getLigths(d.obj);
 	w.mlx_ptr = mlx_init();
 	w.win_ptr = mlx_new_window(w.mlx_ptr,d.R.x,d.R.y,"miniRT");

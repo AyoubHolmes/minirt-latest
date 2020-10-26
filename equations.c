@@ -1,26 +1,5 @@
 #include "miniRT.h"
 
-/*double equationSphere(ray R, t_vector sphere_center, double rayon)
-{
-	t_vector oc = subtract(R.A, sphere_center);
-	double a = scalar(R.B, R.B);
-	double b = 2.0 * scalar(oc, R.B);
-	double c = scalar(oc, oc) - pow(rayon, 2);
-	double dis = pow(b, 2) - 4 * a * c;
-
-	oc = subtract(R.A, sphere_center);
-	a = scalar(R.B, R.B);
-	printf("dis: %.1f \n", dis);
-	if (dis < 0)
-	{
-		return -1.0;
-	}
-	else
-	{
-		return (-b - sqrt(dis) ) / (2.0*a);
-	}
-}*/
-
 double equationSphere(ray R, t_objects *obj, double *distance)
 {
 	t_Sphere	*sp = ((t_Sphere*)obj->content);
@@ -40,7 +19,7 @@ double equationSphere(ray R, t_objects *obj, double *distance)
 	else
 	{
 		t = (-b - sqrt(dis) ) / (2.0*a);
-		if (*distance > t)
+		if (t <= *distance && t >= 0)
 		{
 			*distance = t;
 			return (t);
@@ -59,7 +38,7 @@ double equationPlane(ray R, t_objects *obj,double *distance)
 	if (x != 0)
 	{
 		t = -y / x;
-		if (t < *distance)
+		if (t <= *distance && t >= 0)
 		{
 			*distance = t;
 			return (t);
@@ -75,19 +54,43 @@ double equationSquare(ray R, t_objects *obj,double *distance)
 	double x = scalar(R.B, make_unit_vector(sq->square_norm));
 	double y = scalar(oc, make_unit_vector(sq->square_norm));
 	double t;
-	if (x != 0)
+	if (fabs(x) > 0)
 	{
 		t = -y / x;
-		oc = subtract(sq->square_center, line_point(R, t));
+		t_vector v = line_point(R, t);
+		oc = subtract(sq->square_center, v);
 		if (fabs(oc.x) <= fabs(oc.y))
 			oc.x = oc.y;
-		if (oc.x <= sq->size / 2 && t > 0)
+		if (fabs(oc.x)<= (double)(sq->size / 2) && t <= *distance && t > 0)
 		{
-			if (t < *distance)
-			{
-				*distance = t;
-				return (t);
-			}
+			*distance = t;
+			return (t);
+		}
+	}
+	return -1;
+}
+
+double equationCylinder(ray R, t_objects *obj,double *distance)
+{
+	t_Cylinder *cy = ((t_Cylinder*)obj->content);
+	t_vector oc = subtract(R.A, cy->cylinder_center);
+	double a = scalar(R.B, R.B) - pow(scalar(R.B, cy->cylinder_norm), 2);
+	double b = 2 * (scalar(oc, R.B) - (scalar(R.B, cy->cylinder_norm) * scalar(oc, cy->cylinder_norm)));
+	double c = scalar(oc, oc) - pow(scalar(oc, cy->cylinder_norm), 2) - pow((double)(cy->cylinder_diametre / 2), 2);
+	double des = pow(b, 2) - 4 * a * c;
+	
+	double t;
+	if (fabs(x) > 0)
+	{
+		t = -y / x;
+		t_vector v = line_point(R, t);
+		oc = subtract(cy->cylinder_center, v);
+		if (fabs(oc.x) <= fabs(oc.y))
+			oc.x = oc.y;
+		if (fabs(oc.x)<= (double)(cy->size / 2) && t <= *distance && t > 0)
+		{
+			*distance = t;
+			return (t);
 		}
 	}
 	return -1;

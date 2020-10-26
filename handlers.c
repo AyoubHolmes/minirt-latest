@@ -33,10 +33,9 @@ int squareHandler(ray r, t_objects *p, double *distance, double *t, t_objects *l
     t_Square sq;
 
     *t = equationSquare(r, p, distance);
-	if (*t > 0)
+	if (*t >= 0)
 	{
-		sq = *(t_Square*)p->content;
-		
+		sq = *((t_Square*)p->content);
 		if (scalar(r.B, sq.square_norm) > 0)
 			sq.square_norm = multiple(-1, sq.square_norm);	
 		return colorCalculator(r, sq.color_square, *t, lights, sq.square_norm);

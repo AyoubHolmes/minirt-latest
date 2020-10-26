@@ -161,6 +161,7 @@ void cameraPrinter (t_Cam_data *cam);
 void lightPrinter (t_Light *light);
 void spherePrinter (t_Sphere *S);
 void planePrinter (t_Plane *P);
+void squarePrinter (t_Square *P);
 void objectsDebugger(t_data d);
 
 /*
