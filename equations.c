@@ -54,15 +54,41 @@ double equationPlane(ray R, t_objects *obj,double *distance)
 	t_Plane *pl = ((t_Plane*)obj->content);
 	t_vector oc = subtract(R.A, pl->plane_center);
 	double x = scalar(R.B, pl->plane_norm);
-	// R.D|NORM
 	double y = scalar(oc, pl->plane_norm);
-	// -OC|NORM 
 	double t;
 	if (x != 0)
 	{
-		// t = -OC|NORM / R.D|NORM
 		t = -y / x;
-		return (t);
+		if (t < *distance)
+		{
+			*distance = t;
+			return (t);
+		}
+	}
+	return -1;
+}
+
+double equationSquare(ray R, t_objects *obj,double *distance)
+{
+	t_Square *sq = ((t_Square*)obj->content);
+	t_vector oc = subtract(R.A, sq->square_center);
+	double x = scalar(R.B, make_unit_vector(sq->square_norm));
+	double y = scalar(oc, make_unit_vector(sq->square_norm));
+	double t;
+	if (x != 0)
+	{
+		t = -y / x;
+		oc = subtract(sq->square_center, line_point(R, t));
+		if (fabs(oc.x) <= fabs(oc.y))
+			oc.x = oc.y;
+		if (oc.x <= sq->size / 2 && t > 0)
+		{
+			if (t < *distance)
+			{
+				*distance = t;
+				return (t);
+			}
+		}
 	}
 	return -1;
 }

@@ -218,7 +218,7 @@ double equationPlane(ray R, t_objects *obj,double *distance);
 */
 
 int sphereHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
-int planeHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights);
+int planeHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
 
 /*
 ** -----------------------------------------

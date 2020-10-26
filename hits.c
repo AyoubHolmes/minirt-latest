@@ -13,15 +13,19 @@ int sphereHandler(ray r, t_objects *p, double *distance, double *t, t_objects *l
     return (color);
 }
 
-int planeHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights)
+int planeHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color)
 {
     t_Plane pl;
 
     *t = equationPlane(r, p, distance);
-	pl = *(t_Plane*)p->content;
-    if (scalar(r.B, pl.plane_norm) > 0)
-	{
-		pl.plane_norm = multiple(-1, pl.plane_norm);	
+    if (*t > 0)
+    {
+		pl = *(t_Plane*)p->content;
+    	if (scalar(r.B, pl.plane_norm) > 0)
+    	{
+			pl.plane_norm = multiple(-1, pl.plane_norm);	
+		}
+		return colorCalculator(r, pl.color_plane, *t, lights, pl.plane_norm);
 	}
-	return colorCalculator(r, pl.color_plane, *t, lights, pl.plane_norm);
+	return (color);
 }
