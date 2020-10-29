@@ -30,7 +30,8 @@ int colorCalculator(ray R, t_vector colorObj, double t, t_objects *lights, t_vec
 	a_dif_spec[0] = (t_vector){0, 0, 0};
 	color = (t_vector){0, 0, 0};
 	l = lights;
-	a_dif_spec[0] = multiple(0.2, multiple((double)1 / 255, (t_vector){255, 255, 255}));
+	// (t_vector){255, 255, 255}
+	a_dif_spec[0] = multiple(0.5, multiple((double)1 / 255, colorObj));
 	newStart = line_point(R, t);
 	V = make_unit_vector(multiple(-1, R.B));
 	a_dif_spec[1] = light_dif_spec(newStart, N, V, lights, colorObj);

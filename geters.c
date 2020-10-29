@@ -32,6 +32,10 @@ int			inter(ray r, t_objects *p, double *distance, double *t, int color, t_objec
 		return planeHandler(r, p, distance, t, lights, color);
 	if (p->id == 6)
 		return squareHandler(r, p, distance, t, lights, color);
+	if (p->id == 7)
+		return cylinderHandler(r, p, distance, t, lights, color);
+	if (p->id == 8)
+		return triangleHandler(r, p, distance, t, lights, color);
 	return color;
 }
 

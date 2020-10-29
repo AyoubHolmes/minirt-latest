@@ -41,8 +41,8 @@ void	data_insertion(t_data *D, char **data)
 		pl_insertion(D, data);
 	else if(i == 6)
 		sq_insertion(D, data);
-	/*else if(i == 5)
+	else if(i == 7)
 		cy_insertion(D, data);
-	else if(i == 6)
-		tr_insertion(D, data);*/
+	else if(i == 8)
+		tr_insertion(D, data);
 }

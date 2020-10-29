@@ -172,4 +172,79 @@ void sq_insertion(t_data *D, char **data)
         p->next->next = NULL;
     }
 }
- 
+
+void cy_insertion(t_data *D, char **data)
+{
+	char **cylinder_center;
+	char **cylinder_norm;
+	char **cylinder_color;
+    char *cylinder_diametre;
+    char *cylinder_height;
+	t_objects *p;
+
+	cylinder_center = ft_split(data[1], ',');
+	cylinder_norm = ft_split(data[2], ',');
+    cylinder_diametre = data[4];
+    cylinder_height = data[5];
+	cylinder_color = ft_split(data[3], ',');
+    if (!D->obj)
+    {
+        if(!(D->obj = (t_objects*)malloc(sizeof(t_objects))))
+            return ;
+		if(!(D->obj->content = (t_Cylinder*)malloc(sizeof(t_Cylinder))))
+            return ;
+        D->obj->content = cylinderInitialize(cylinder_center, cylinder_norm, cylinder_color, cylinder_diametre, cylinder_height);
+		D->obj->id = 7;
+        D->obj->next = NULL;
+    }
+    else
+    {
+        p = D->obj;
+        while (p->next != NULL)
+            p = p->next;
+        if(!(p->next = (t_objects*)malloc(sizeof(t_objects))))
+            return ;
+		if(!(p->next->content = (t_Cylinder*)malloc(sizeof(t_Cylinder))))
+            return ;
+        p->next->content = cylinderInitialize(cylinder_center, cylinder_norm, cylinder_color, cylinder_diametre, cylinder_height);
+		p->next->id = 7;
+        p->next->next = NULL;
+    }
+}
+
+void tr_insertion(t_data *D, char **data)
+{
+	char **first_point;
+	char **second_point;
+	char **third_point;
+    char **triangle_color;
+	t_objects *p;
+
+	first_point = ft_split(data[1], ',');
+	second_point = ft_split(data[2], ',');
+	third_point = ft_split(data[3], ',');
+    triangle_color = ft_split(data[4], ',');
+    if (!D->obj)
+    {
+        if(!(D->obj = (t_objects*)malloc(sizeof(t_objects))))
+            return ;
+		if(!(D->obj->content = (t_Cylinder*)malloc(sizeof(t_Cylinder))))
+            return ;
+        D->obj->content = triangleInitialize(first_point, second_point, third_point, triangle_color);
+		D->obj->id = 8;
+        D->obj->next = NULL;
+    }
+    else
+    {
+        p = D->obj;
+        while (p->next != NULL)
+            p = p->next;
+        if(!(p->next = (t_objects*)malloc(sizeof(t_objects))))
+            return ;
+		if(!(p->next->content = (t_Cylinder*)malloc(sizeof(t_Cylinder))))
+            return ;
+        p->next->content = triangleInitialize(first_point, second_point, third_point, triangle_color);
+		p->next->id = 8;
+        p->next->next = NULL;
+    }
+}

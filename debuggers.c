@@ -77,6 +77,33 @@ void squarePrinter(t_Square *Sq)
     vectorPrinter(Sq->color_square);  
 }
 
+void cylinderPrinter(t_Cylinder *cy)
+{
+    printf("------------ Cylinder --------\n");
+    printf("-> cylinder center:\n");
+    vectorPrinter(cy->cylinder_center);
+    printf("-> cylinder norm:\n");
+    vectorPrinter(cy->cylinder_norm);
+    printf("->cylinder size: %f\n", (double)(cy->cylinder_diametre / 2));
+    printf("-> cylinder color:\n");
+    vectorPrinter(cy->cylinder_color); 
+    printf("-> cylinder height: %f\n", cy->cylinder_height);
+}
+
+void trianglePrinter(t_Triangle *tr)
+{
+    printf("------------ Triangle --------\n");
+    printf("-> first point:\n");
+    vectorPrinter(tr->first_point);
+    printf("-> second point:\n");
+    vectorPrinter(tr->second_point);
+    printf("-> third point:\n");
+    vectorPrinter(tr->third_point);
+    printf("-> triangle color:\n");
+    vectorPrinter(tr->triangle_color);
+}
+
+
 void objectsDebugger(t_data d)
 {
     t_objects *p;
@@ -96,6 +123,10 @@ void objectsDebugger(t_data d)
             planePrinter((t_Plane*)(p->content));
         else if (p->id == 6)
             squarePrinter((t_Square*)(p->content));
+        else if (p->id == 7)
+            cylinderPrinter((t_Cylinder*)(p->content));
+        else if (p->id == 8)
+            trianglePrinter((t_Triangle*)(p->content));
         p = p->next;
     }
 

@@ -113,6 +113,13 @@ typedef struct			s_data
 	int					pixel;
 }						t_data;
 
+typedef struct			s_passage_cy
+{
+	t_vector N;
+	double t;
+}						t_passage_cy;
+
+
 
 /*
 ** ----------------------------
@@ -145,6 +152,8 @@ t_objects *ligthInitializer(char **lp, char **lc, char *brightness);
 t_objects *sphereInitialize(char **sc, char **color_sphere, char *sphere_diametre);
 t_Plane *planeInitialize(char **plane_center, char **plane_norm, char **color_plane);
 t_Square *squareInitialize(char **square_center, char **square_norm, char **color_square, char *size);
+t_Cylinder *cylinderInitialize(char **cylinder_center, char **cylinder_norm, char **color_cylinder, char *cylinder_diametre, char *cylinder_height);
+t_Triangle *triangleInitialize(char **first_point, char **second_point, char **third_point, char **triangle_color);
 
 /*
 ** -------------------------------------------------------
@@ -162,6 +171,8 @@ void lightPrinter (t_Light *light);
 void spherePrinter (t_Sphere *S);
 void planePrinter (t_Plane *P);
 void squarePrinter (t_Square *P);
+void cylinderPrinter(t_Cylinder *cy);
+void trianglePrinter(t_Triangle *tr);
 void objectsDebugger(t_data d);
 
 /*
@@ -188,6 +199,8 @@ void		l_insertion(t_data *D, char **data);
 void		sp_insertion(t_data *D, char **data);
 void		pl_insertion(t_data *D, char **data);
 void		sq_insertion(t_data *D, char **data);
+void		cy_insertion(t_data *D, char **data);
+void		tr_insertion(t_data *D, char **data);
 
 /*
 ** -------------------------------------------------------
@@ -212,17 +225,22 @@ t_vector color_clamping(t_vector color);
 double equationSphere(ray R, t_objects *obj, double *distance);
 double equationPlane(ray R, t_objects *obj,double *distance);
 double equationSquare(ray R, t_objects *obj,double *distance);
+t_passage_cy equationCylinder(ray R, t_objects *obj,double *distance);
+double equationTriangle(ray R, t_objects *obj,double *distance);
+
 /*
 ** -----------------------------------------
 */
 
 /*
-**  ---------- Hits Functions ------------
+**  ---------- Handler Functions ------------
 */
 
 int sphereHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
 int planeHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
 int squareHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
+int cylinderHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
+int triangleHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
 
 /*
 ** -----------------------------------------

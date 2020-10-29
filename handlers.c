@@ -42,3 +42,36 @@ int squareHandler(ray r, t_objects *p, double *distance, double *t, t_objects *l
 	}
     return (color);
 }
+
+int cylinderHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color)
+{
+    t_Cylinder cy;
+	t_passage_cy pass;
+
+    pass = equationCylinder(r, p, distance);
+	*t = pass.t;
+	if (*t >= 0)
+	{
+		cy = *((t_Cylinder*)p->content);
+		return colorCalculator(r, cy.cylinder_color, *t, lights, pass.N);
+	}
+    return (color);
+}
+
+int triangleHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color)
+{
+    t_Triangle tr;
+
+    *t = equationTriangle(r, p, distance);
+    if (*t > 0)
+    {
+		tr = *(t_Triangle*)p->content;
+		t_vector V1 = subtract(tr.second_point, tr.first_point);
+		t_vector V2 = subtract(tr.third_point, tr.first_point);
+		t_vector V = make_unit_vector(v_product(V1, V2));
+		if (scalar(r.B, V) > 0)
+			V = multiple(-1, V);	
+		return colorCalculator(r, tr.triangle_color, *t, lights, V);
+	}
+	return (color);
+}

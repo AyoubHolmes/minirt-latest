@@ -108,3 +108,65 @@ t_Square *squareInitialize(char **square_center, char **square_norm, char **colo
 	};
 	return (square);
 }
+
+t_Cylinder *cylinderInitialize(char **cylinder_center, char **cylinder_norm, char **color_cylinder, char *cylinder_diametre, char *cylinder_height)
+{
+	t_Cylinder *cylinder;
+
+	if(!(cylinder = (t_Cylinder*)malloc(sizeof(t_Cylinder))))
+		return (0);
+	cylinder->cylinder_diametre = strtof(cylinder_diametre, NULL);
+    cylinder->cylinder_height = strtof(cylinder_height, NULL);
+	cylinder->cylinder_center = (t_vector)
+	{
+		strtof(cylinder_center[0], NULL),
+		strtof(cylinder_center[1], NULL),
+		strtof(cylinder_center[2], NULL)
+	};
+	cylinder->cylinder_norm = (t_vector)
+	{
+		strtof(cylinder_norm[0], NULL),
+		strtof(cylinder_norm[1], NULL),
+		strtof(cylinder_norm[2], NULL)
+	};
+	cylinder->cylinder_color = (t_vector)
+	{
+		strtof(color_cylinder[0], NULL),
+		strtof(color_cylinder[1], NULL),
+		strtof(color_cylinder[2], NULL)
+	};
+	return (cylinder);
+}
+
+t_Triangle *triangleInitialize(char **first_point, char **second_point, char **third_point, char **triangle_color)
+{
+	t_Triangle *tr;
+
+	if(!(tr = (t_Triangle*)malloc(sizeof(t_Triangle))))
+		return (0);
+	tr->first_point = (t_vector)
+	{
+		strtof(first_point[0], NULL),
+		strtof(first_point[1], NULL),
+		strtof(first_point[2], NULL)
+	};
+	tr->second_point = (t_vector)
+	{
+		strtof(second_point[0], NULL),
+		strtof(second_point[1], NULL),
+		strtof(second_point[2], NULL)
+	};
+	tr->third_point = (t_vector)
+	{
+		strtof(third_point[0], NULL),
+		strtof(third_point[1], NULL),
+		strtof(third_point[2], NULL)
+	};
+    tr->triangle_color = (t_vector)
+	{
+		strtof(triangle_color[0], NULL),
+		strtof(triangle_color[1], NULL),
+		strtof(triangle_color[2], NULL)
+	};
+	return (tr);
+}
