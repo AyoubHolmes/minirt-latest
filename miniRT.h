@@ -250,10 +250,10 @@ int triangleHandler(ray r, t_objects *p, double *distance, double *t, t_objects 
 **  ---------- Shadow Handler Functions ------------
 */
 
-int sphereShadowHandler(t_vector newStart, t_objects *p, t_objects *lights, int color);
-int planeShadowHandler(t_vector newStart, t_objects *p, t_objects *lights, int color);
-int squareShadowHandler(t_vector newStart, t_objects *p, t_objects *lights, int color);
-int cylinderShadowHandler(t_vector newStart, t_objects *p,  t_objects *lights, int color);
+int sphereShadowHandler(t_vector newStart, t_objects *p, t_objects *lights, int color, double *d_shadow);
+int planeShadowHandler(t_vector newStart, t_objects *p, t_objects *lights, int color, double *d_shadow);
+int squareShadowHandler(t_vector newStart, t_objects *p, t_objects *lights, int color, double *d_shadow);
+int cylinderShadowHandler(t_vector newStart, t_objects *p,  t_objects *lights, int color, double *d_shadow);
 
 /*
 ** -----------------------------------------
@@ -266,7 +266,7 @@ int cylinderShadowHandler(t_vector newStart, t_objects *p,  t_objects *lights, i
 int colorPlane(ray R, t_Plane pl, double t, t_objects *lights);
 int colorSphere(ray R, t_Sphere sp, double t, t_objects *lights);
 int colorCalculator(ray R, t_vector colorObj, double t, t_objects *lights, t_vector N);
-int	getPixelColor(t_objects *obj, ray r, double *distance, t_objects *lights);
+int	getPixelColor(t_objects *obj, ray r, double *distance, double *d_shadow, t_objects *lights);
 /*
 ** -----------------------------------------
 */

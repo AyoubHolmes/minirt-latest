@@ -39,20 +39,20 @@ int			inter(ray r, t_objects *p, double *distance, double *t, int color, t_objec
 	return color;
 }
 
-int interShadow(t_vector newStart, t_objects *p, t_objects *lights, int color, int id)
+int interShadow(t_vector newStart, t_objects *p, t_objects *lights, int color, double *d_shadow)
 {
 	if (p->id == 4)
-		return sphereShadowHandler(newStart, p, lights, color);
+		return sphereShadowHandler(newStart, p, lights, color, d_shadow);
 	if (p->id == 5)
-		return planeShadowHandler(newStart, p, lights, color);
+		return planeShadowHandler(newStart, p, lights, color, d_shadow);
 	if (p->id == 6)
-		return squareShadowHandler(newStart, p, lights, color);
+		return squareShadowHandler(newStart, p, lights, color, d_shadow);
 	if (p->id == 7)
-		return cylinderShadowHandler(newStart, p, lights, color);
+		return cylinderShadowHandler(newStart, p, lights, color, d_shadow);
 	return (-1);
 }
 
-int			getPixelColor(t_objects *obj, ray r, double *distance, t_objects *lights)
+int			getPixelColor(t_objects *obj, ray r, double *distance, double *d_shadow, t_objects *lights)
 {
 	int			color;
 	int			colorShadow;
@@ -63,6 +63,7 @@ int			getPixelColor(t_objects *obj, ray r, double *distance, t_objects *lights)
 	color = 0;
 	colorShadow = -1;
 	*distance = INT_MAX;
+	*d_shadow = INT_MAX;
 	p = obj;
     while (p != NULL)
     {
@@ -72,7 +73,7 @@ int			getPixelColor(t_objects *obj, ray r, double *distance, t_objects *lights)
 		{
 			if (p2 != p)
 			{
-				colorShadow = interShadow(line_point(r, t), p2, lights, color, p->id);
+				colorShadow = interShadow(line_point(r, t), p2, lights, color, d_shadow);
 				if (colorShadow != -1)
 					color = colorShadow;
 			}
