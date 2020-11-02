@@ -247,6 +247,19 @@ int triangleHandler(ray r, t_objects *p, double *distance, double *t, t_objects 
 */
 
 /*
+**  ---------- Shadow Handler Functions ------------
+*/
+
+int sphereShadowHandler(t_vector newStart, t_objects *p, t_objects *lights, int color);
+int planeShadowHandler(t_vector newStart, t_objects *p, t_objects *lights, int color);
+int squareShadowHandler(t_vector newStart, t_objects *p, t_objects *lights, int color);
+int cylinderShadowHandler(t_vector newStart, t_objects *p,  t_objects *lights, int color);
+
+/*
+** -----------------------------------------
+*/
+
+/*
 **  ---------- Executers Functions ---------
 */
 

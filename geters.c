@@ -39,18 +39,45 @@ int			inter(ray r, t_objects *p, double *distance, double *t, int color, t_objec
 	return color;
 }
 
+int interShadow(t_vector newStart, t_objects *p, t_objects *lights, int color, int id)
+{
+	if (p->id == 4)
+		return sphereShadowHandler(newStart, p, lights, color);
+	if (p->id == 5)
+		return planeShadowHandler(newStart, p, lights, color);
+	if (p->id == 6)
+		return squareShadowHandler(newStart, p, lights, color);
+	if (p->id == 7)
+		return cylinderShadowHandler(newStart, p, lights, color);
+	return (-1);
+}
+
 int			getPixelColor(t_objects *obj, ray r, double *distance, t_objects *lights)
 {
 	int			color;
+	int			colorShadow;
     t_objects	*p;
+	t_objects	*p2;
 	double		t;
 
 	color = 0;
+	colorShadow = -1;
 	*distance = INT_MAX;
 	p = obj;
     while (p != NULL)
     {
         color = inter(r, p, distance, &t, color, lights);
+		p2 = obj;
+		while (p2 != NULL)
+		{
+			if (p2 != p)
+			{
+				colorShadow = interShadow(line_point(r, t), p2, lights, color, p->id);
+				if (colorShadow != -1)
+					color = colorShadow;
+			}
+			p2 = p2->next;
+		}
 		p = p->next;
     }
 	return (color);
