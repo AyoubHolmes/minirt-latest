@@ -119,6 +119,13 @@ typedef struct			s_passage_cy
 	double t;
 }						t_passage_cy;
 
+typedef struct s_p_shadow
+{
+	t_vector newStart;
+	t_vector color_shadow;
+	t_vector object_position;
+}t_p_shadow;
+
 
 
 /*
@@ -236,11 +243,11 @@ double equationTriangle(ray R, t_objects *obj,double *distance);
 **  ---------- Handler Functions ------------
 */
 
-int sphereHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
-int planeHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
-int squareHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
-int cylinderHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
-int triangleHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color);
+int sphereHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color, t_p_shadow *t_shadow);
+int planeHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color, t_p_shadow *t_shadow);
+int squareHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color, t_p_shadow *t_shadow);
+int cylinderHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color, t_p_shadow *t_shadow);
+int triangleHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color, t_p_shadow *t_shadow);
 
 /*
 ** -----------------------------------------

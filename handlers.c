@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-int sphereHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color)
+int sphereHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color, t_p_shadow *t_shadow)
 {
 	t_vector newStart;
 	t_vector N;
@@ -8,21 +8,26 @@ int sphereHandler(ray r, t_objects *p, double *distance, double *t, t_objects *l
     *t = equationSphere(r, p, distance);
     if (*t > 0)
     {
-        newStart = line_point(r, *t);
-        N = make_unit_vector(subtract(newStart ,(*(t_Sphere*)p->content).sphere_center));
-		color = colorCalculator(r, (*(t_Sphere*)p->content).color_sphere, *t, lights, N);
+        t_shadow->newStart = line_point(r, *t);
+        N = make_unit_vector(subtract(t_shadow->newStart ,(*(t_Sphere*)p->content).sphere_center));
+		t_shadow->color_shadow = (*(t_Sphere*)p->content).color_sphere;
+		t_shadow->object_position = (*(t_Sphere*)p->content).sphere_center;
+		color = colorCalculator(r, t_shadow->color_shadow, *t, lights, N);
     }
     return (color);
 }
 
-int planeHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color)
+int planeHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color, t_p_shadow *t_shadow)
 {
     t_Plane pl;
 
     *t = equationPlane(r, p, distance);
     if (*t > 0)
     {
+		t_shadow->newStart = line_point(r, *t);
 		pl = *(t_Plane*)p->content;
+		t_shadow->color_shadow = pl.color_plane;
+		t_shadow->object_position = pl.plane_center;
     	if (scalar(r.B, pl.plane_norm) > 0)
 			pl.plane_norm = multiple(-1, pl.plane_norm);	
 		color = colorCalculator(r, pl.color_plane, *t, lights, pl.plane_norm);
@@ -30,14 +35,17 @@ int planeHandler(ray r, t_objects *p, double *distance, double *t, t_objects *li
 	return (color);
 }
 
-int squareHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color)
+int squareHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color, t_p_shadow *t_shadow)
 {
     t_Square sq;
 
     *t = equationSquare(r, p, distance);
 	if (*t >= 0)
 	{
+		t_shadow->newStart = line_point(r, *t);
 		sq = *((t_Square*)p->content);
+		t_shadow->color_shadow = sq.color_square;
+		t_shadow->object_position = sq.square_center;
 		if (scalar(r.B, sq.square_norm) > 0)
 			sq.square_norm = multiple(-1, sq.square_norm);	
 		color = colorCalculator(r, sq.color_square, *t, lights, sq.square_norm);
@@ -45,7 +53,7 @@ int squareHandler(ray r, t_objects *p, double *distance, double *t, t_objects *l
     return (color);
 }
 
-int cylinderHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color)
+int cylinderHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color, t_p_shadow *t_shadow)
 {
     t_Cylinder cy;
 	t_passage_cy pass;
@@ -54,13 +62,16 @@ int cylinderHandler(ray r, t_objects *p, double *distance, double *t, t_objects 
 	*t = pass.t;
 	if (*t >= 0)
 	{
+		t_shadow->newStart = line_point(r, *t);
 		cy = *((t_Cylinder*)p->content);
+		t_shadow->color_shadow = cy.cylinder_color;
+		t_shadow->object_position = cy.cylinder_center;
 		color = colorCalculator(r, cy.cylinder_color, *t, lights, pass.N);
 	}
     return (color);
 }
 
-int triangleHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color)
+int triangleHandler(ray r, t_objects *p, double *distance, double *t, t_objects *lights, int color, t_p_shadow *t_shadow)
 {
     t_Triangle tr;
 
