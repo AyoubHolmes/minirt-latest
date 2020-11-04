@@ -126,6 +126,11 @@ typedef struct s_p_shadow
 	t_vector object_position;
 }t_p_shadow;
 
+typedef struct s_main
+{
+	t_data d;
+	t_window w;
+}t_main;
 
 
 /*

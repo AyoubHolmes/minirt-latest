@@ -25,7 +25,6 @@ t_data		file_parser(char *file)
     return (d);
 }
 
-
 void		graphicDrawer(t_data d,t_window w)
 {
 	int i;
@@ -52,24 +51,41 @@ void		graphicDrawer(t_data d,t_window w)
 	mlx_put_image_to_window(w.mlx_ptr, w.win_ptr, w.img_ptr,0,0);
 }
 
+int key_press(int keycode, t_main *m)
+{
+	if(keycode == 53 || keycode == 12)
+		exit(0);
+	if (keycode == 123)
+	{
+		m->d.cameras = get_cam_previous(&m->d.cameras);
+		graphicDrawer(m->d, m->w);
+		printf("test here 1 \n");
+	}
+	if (keycode == 124)
+	{
+		m->d.cameras = get_cam_next(&m->d.cameras);
+		printf("test here 2 \n");
+		graphicDrawer(m->d, m->w);
+	}
+	return (0);
+}
+
 int			main()
 {
-	t_data				d;
-	t_window			w;
+	t_main	m;
 
-	d = file_parser("test.rt");
-	objectsDebugger(d);
-	d.cameras = getCams(d);
-	d.cameras = get_cam_next(&d.cameras);
-	d.cameras = get_cam_next(&d.cameras);
+	m.d = file_parser("test.rt");
+	objectsDebugger(m.d);
+	m.d.cameras = getCams(m.d);
 	//cameraPrinter(&d.cameras->cam);
-	d.lights = getLigths(d.obj);
-	w.mlx_ptr = mlx_init();
-	w.win_ptr = mlx_new_window(w.mlx_ptr,d.R.x,d.R.y,"miniRT");
-	w.img_ptr = mlx_new_image(w.mlx_ptr,d.R.x,d.R.y);
-	w.img_data = (int *)mlx_get_data_addr(w.img_ptr, &w.bpp, &w.size_l, &w.img_endian);
-	if (d.lights == 0 || d.cameras == 0 || d.obj == 0)
+	m.d.lights = getLigths(m.d.obj);
+	m.w.mlx_ptr = mlx_init();
+	m.w.win_ptr = mlx_new_window(m.w.mlx_ptr,m.d.R.x,m.d.R.y,"miniRT");
+	m.w.img_ptr = mlx_new_image(m.w.mlx_ptr,m.d.R.x,m.d.R.y);
+	m.w.img_data = (int *)mlx_get_data_addr(m.w.img_ptr, &m.w.bpp, &m.w.size_l, &m.w.img_endian);
+	if (m.d.lights == 0 || m.d.cameras == 0 || m.d.obj == 0)
 		return (0);
-	graphicDrawer(d, w);
-	mlx_loop(w.mlx_ptr);
+	graphicDrawer(m.d, m.w);
+	mlx_hook(m.w.win_ptr, 2, 0, key_press, &m);
+	mlx_loop(m.w.mlx_ptr);
 }
