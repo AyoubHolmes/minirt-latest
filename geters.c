@@ -52,6 +52,18 @@ int interShadow(t_vector newStart, t_objects *p, t_objects *lights, int color, d
 	return (-1);
 }
 
+int			shadowHandler(t_vector A, t_vector B, t_vector C)
+{
+	double a;
+	double b;
+
+	a = squared_length(subtract(B, A));
+	b = squared_length(subtract(C, A));
+	if (a > b)
+		return (1);
+	return (0);
+}
+
 int			interShadowUpgraded(t_p_shadow  t_shadow, t_objects *p, t_objects *lights, double *d_shadow)
 {
 	double t = -1;
@@ -61,11 +73,11 @@ int			interShadowUpgraded(t_p_shadow  t_shadow, t_objects *p, t_objects *lights,
 	t_objects *l;
 	ray r;
 
-	r.A = t_shadow.newStart;
+	r.A = add(t_shadow.newStart, (t_vector){1e-4f,1e-4f,1e-4f});
     l = lights;
 	while (l != NULL)
 	{
-		r.B = make_unit_vector(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
+		r.B = make_unit_vector(add(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart),(t_vector){1e-4f,1e-4f,1e-4f}));
 		if (p->id == 4)
 		{
 			A = squared_length(subtract((*(t_Light*)l->content).light_pos, t_shadow.object_position));

@@ -37,14 +37,14 @@ void		graphicDrawer(t_data d,t_window w)
 	j = 0;
 	while(j < d.R.y)
 	{
-		i = 0;
-		while (i < d.R.x)
+		i = d.R.x - 1;
+		while (i >= 0)
 		{
 			u = (double)i / (double)d.R.x;
 			v = (double)j / (double)d.R.y;
 			ray r = get_ray(d, u, v);
 			w.img_data[k++] = getPixelColor(d.obj, r, &distance, &d_shadow, d.lights);
-			i++;
+			i--;
 		}
 		j++;
 	}
