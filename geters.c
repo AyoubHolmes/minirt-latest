@@ -64,6 +64,11 @@ int			shadowHandler(t_vector A, t_vector B, t_vector C)
 	return (0);
 }
 
+t_vector approCorrector(t_vector v)
+{
+	return (add(v, (t_vector){1e-4f,1e-4f,1e-4f}));
+}
+
 int			interShadowUpgraded(t_p_shadow  t_shadow, t_objects *p, t_objects *lights, double *d_shadow)
 {
 	double t = -1;
@@ -73,44 +78,60 @@ int			interShadowUpgraded(t_p_shadow  t_shadow, t_objects *p, t_objects *lights,
 	t_objects *l;
 	ray r;
 
-	r.A = add(t_shadow.newStart, (t_vector){1e-4f,1e-4f,1e-4f});
+	r.A = approCorrector(t_shadow.newStart);
     l = lights;
 	while (l != NULL)
 	{
-		r.B = make_unit_vector(add(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart),(t_vector){1e-4f,1e-4f,1e-4f}));
+		r.B = make_unit_vector(approCorrector(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart)));
 		if (p->id == 4)
 		{
-			A = squared_length(subtract((*(t_Light*)l->content).light_pos, t_shadow.object_position));
-			B = squared_length(subtract((*(t_Sphere*)p->content).sphere_center, t_shadow.object_position));
+			A = length(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
+			B = length(subtract((*(t_Sphere*)p->content).sphere_center, t_shadow.newStart));
 			t = equationSphere(r, p, d_shadow);
+			if (t >= 0 && t <= *d_shadow && A > B)
+			{
+				shadowColor = multiple(0.5, multiple((double)1 / 255, t_shadow.color_shadow));
+				*d_shadow = t;
+				return (rgb_maker(color_clamping(shadowColor)));
+			}
 		}
 		if (p->id == 5)
 		{
-			A = squared_length(subtract((*(t_Light*)l->content).light_pos, t_shadow.object_position));
-			B = squared_length(subtract((*(t_Plane*)p->content).plane_center, t_shadow.object_position));
+			A = length(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
+			B = length(subtract((*(t_Plane*)p->content).plane_center, t_shadow.newStart));
 			t = equationPlane(r, p, d_shadow);
+			if (t >= 0 && t <= *d_shadow && A > B)
+			{
+				shadowColor = multiple(0.5, multiple((double)1 / 255, t_shadow.color_shadow));
+				*d_shadow = t;
+				return (rgb_maker(color_clamping(shadowColor)));
+			}
 		}
 		if (p->id == 6)
 		{
-			A = squared_length(subtract((*(t_Light*)l->content).light_pos, t_shadow.object_position));
-			B = squared_length(subtract((*(t_Square*)p->content).square_center, t_shadow.object_position));
+			A = length(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
+			B = length(subtract((*(t_Square*)p->content).square_center, t_shadow.newStart));
 			t = equationSquare(r, p, d_shadow);
+			if (t >= 0 && t <= *d_shadow && A > B)
+			{
+				shadowColor = multiple(0.5, multiple((double)1 / 255, t_shadow.color_shadow));
+				*d_shadow = t;
+				return (rgb_maker(color_clamping(shadowColor)));
+			}
 		}
 		if (p->id == 7)
 		{
-			A = squared_length(subtract((*(t_Light*)l->content).light_pos, t_shadow.object_position));
-			B = squared_length(subtract((*(t_Cylinder*)p->content).cylinder_center, t_shadow.object_position));
+			A = length(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
+			B = length(subtract((*(t_Cylinder*)p->content).cylinder_center, t_shadow.newStart));
 			t = equationCylinder(r, p, d_shadow).t;
+			if (t >= 0 && t <= *d_shadow && A > B)
+			{
+				shadowColor = multiple(0.5, multiple((double)1 / 255, t_shadow.color_shadow));
+				*d_shadow = t;
+				return (rgb_maker(color_clamping(shadowColor)));
+			}
 		}
-		if (t > 0)
-			break;
 		l = l->next;
-	}
-	if (t >= 0 && t <= *d_shadow && A > B)
-	{
-		shadowColor = multiple(0.5, multiple((double)1 / 255, t_shadow.color_shadow));
-		*d_shadow = t;
-        return (rgb_maker(color_clamping(shadowColor)));
 	}
 	return (-1);
 }
@@ -126,7 +147,6 @@ int			getPixelColor(t_objects *obj, ray r, double *distance, double *d_shadow, t
 	t_p_shadow	t_shadow;
 
 	color = 0;
-	colorShadow = -1;
 	*distance = INT_MAX;
 	*d_shadow = INT_MAX;
 	p = obj;

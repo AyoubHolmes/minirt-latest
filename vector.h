@@ -16,5 +16,6 @@
     t_vector v_product(t_vector v1, t_vector v2);
     t_vector make_unit_vector(t_vector v);
     double squared_length(t_vector v);
+    double length(t_vector v);
 
 #endif

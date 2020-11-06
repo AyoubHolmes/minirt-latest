@@ -62,10 +62,15 @@ t_vector v_product(t_vector v1, t_vector v2)
 
 double squared_length(t_vector v)
 {
-    return(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2));
+    return(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
+double length(t_vector v)
+{
+    return sqrt(squared_length(v));
 }
 
 t_vector make_unit_vector(t_vector v)
 {
-    return (multiple(1/sqrt(squared_length(v)), v));
+    return (multiple(1/length(v), v));
 }
