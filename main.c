@@ -1,6 +1,7 @@
 #include "miniRT.h"
 #include <mlx.h>
 //gcc -Wall -Werror -Wextra  -I /usr/local/include -L /usr/local/lib -lmlx -framework OpenGl -framework AppKit tracing_ray.c && ./a.out
+// gcc -I /usr/local/include -L /usr/local/lib -lmlx -framework OpenGl -framework AppKit tracing_ray.c && ./a.out
 
 int		file_checker(char *file)
 {
@@ -10,7 +11,6 @@ int		file_checker(char *file)
     int		fd;
     int		rest;
 
-	d.obj = NULL;
     fd = open(file, O_RDONLY);
     rest = 1;
     while(rest == 1)
@@ -18,10 +18,9 @@ int		file_checker(char *file)
         rest = get_next_line(fd, &line);
         if (line[0] == '\0')
             continue;
-        data = ft_split_whitespaces(line);
-		isChecked = data_checker(data);
-		if (isChecked == -1)
-			return (0);
+		isChecked = data_checker(line);
+		if (isChecked != 1)
+			return (isChecked);
     }
     close(fd);
     return (1);
@@ -95,22 +94,40 @@ int key_press(int keycode, t_main *m)
 	return (0);
 }*/
 
+t_data parse(char *filename)
+{
+	t_data d;
+
+	d = file_parser(filename);
+	objectsDebugger(d);
+	d.cameras = getCams(d);
+	d.lights = getLigths(d.obj);
+	/*if (d.lights == 0 || d.cameras == 0 || d.obj == 0)
+		return (0);*/
+	return (d);
+}
+
 int			main()
 {
 	t_main	m;
+	int i;
 
-	m.d = file_parser("test.rt");
-	objectsDebugger(m.d);
-	m.d.cameras = getCams(m.d);
-	//cameraPrinter(&d.cameras->cam);
-	m.d.lights = getLigths(m.d.obj);
-	/*m.w.mlx_ptr = mlx_init();
-	m.w.win_ptr = mlx_new_window(m.w.mlx_ptr,m.d.R.x,m.d.R.y,"miniRT");
-	m.w.img_ptr = mlx_new_image(m.w.mlx_ptr,m.d.R.x,m.d.R.y);
-	m.w.img_data = (int *)mlx_get_data_addr(m.w.img_ptr, &m.w.bpp, &m.w.size_l, &m.w.img_endian);
-	if (m.d.lights == 0 || m.d.cameras == 0 || m.d.obj == 0)
-		return (0);
-	graphicDrawer(m.d, m.w);
-	mlx_hook(m.w.win_ptr, 2, 0, key_press, &m);
-	mlx_loop(m.w.mlx_ptr);*/
+	i = file_checker("test.rt");
+	if (i == 1)
+	{
+		m.d = parse("test.rt");
+		/*m.w.mlx_ptr = mlx_init();
+		m.w.win_ptr = mlx_new_window(m.w.mlx_ptr,m.d.R.x,m.d.R.y,"miniRT");
+		m.w.img_ptr = mlx_new_image(m.w.mlx_ptr,m.d.R.x,m.d.R.y);
+		m.w.img_data = (int *)mlx_get_data_addr(m.w.img_ptr, &m.w.bpp, &m.w.size_l, &m.w.img_endian);
+		graphicDrawer(m.d, m.w);
+		mlx_hook(m.w.win_ptr, 2, 0, key_press, &m);
+		mlx_loop(m.w.mlx_ptr);*/
+	}
+	else
+	{
+		errorPrinter(i);
+		exit(1);
+	}
+	return (0);
 }

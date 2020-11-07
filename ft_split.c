@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-static int		ft_nbr_words(char *str, char c)
+int		ft_nbr_words(char *str, char c)
 {
 	int nbr;
 	int i;

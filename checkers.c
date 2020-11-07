@@ -13,6 +13,24 @@ int		ft_isint(char *c)
 	int i;
 
 	i = 0;
+	if (c[0] == '-' || c[0] == '+')
+		i = 1;
+	while (c[i] != '\0')
+	{
+		if (!ft_isdigit(c[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int		ft_ispositiveint(char *c)
+{
+	int i;
+
+	i = 0;
+	if (c[0] == '+')
+		i = 1;
 	while (c[i] != '\0')
 	{
 		if (!ft_isdigit(c[i]))
@@ -25,8 +43,11 @@ int		ft_isint(char *c)
 int		ft_isfloat(char *c)
 {
 	int i;
+	int k;
 
 	i = 0;
+	if (c[0] == '-' || c[0] == '+')
+		i = 1;
 	while (c[i] != '\0')
 	{
 		if (!ft_isdigit(c[i]) && c[i] != '.')
@@ -36,7 +57,64 @@ int		ft_isfloat(char *c)
 	return (1);
 }
 
-int		ft_isvector(char *c)
+int		ft_ispositivefloat(char *c)
+{
+	int i;
+	int k;
+
+	i = 0;
+	if (c[0] == '+')
+		i = 1;
+	while (c[i] != '\0')
+	{
+		if (!ft_isdigit(c[i]) && c[i] != '.')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int		ft_isintensityfloat(char *c)
+{
+	int i;
+	float k;
+
+	i = 0;
+	if (c[0] == '+')
+		i = 1;
+	while (c[i] != '\0')
+	{
+		if (!ft_isdigit(c[i]) && c[i] != '.')
+			return (0);
+		i++;
+	}
+	k = atof(c);
+	if(k >=0 && k <= 1)
+		return (1);
+	return (0);
+}
+
+int		ft_iscolorfloat(char *c)
+{
+	int i;
+	float k;
+
+	i = 0;
+	if (c[0] == '+')
+		i = 1;
+	while (c[i] != '\0')
+	{
+		if (!ft_isdigit(c[i]) && c[i] != '.')
+			return (0);
+		i++;
+	}
+	k = atof(c);
+	if(k > 255)
+		return (0);
+	return (1);
+}
+
+int		ft_isvector(char *c, int (*func)())
 {
 	char **vector;
 	int i;
@@ -47,7 +125,7 @@ int		ft_isvector(char *c)
 	i = 0;
 	while (i < 3)
 	{
-		if (!ft_isnumber(vector[i]))
+		if (!func(vector[i]))
 			return (0);
 		i++;
 	}

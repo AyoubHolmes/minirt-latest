@@ -197,8 +197,23 @@ void objectsDebugger(t_data d);
 
 int		ft_isdigit(int c);
 int		ft_isint(char *c);
+int		ft_ispositiveint(char *c);
 int		ft_isfloat(char *c);
-int		ft_isvector(char *c);
+int		ft_ispositivefloat(char *c);
+int		ft_isintensityfloat(char *c);
+int		ft_iscolorfloat(char *c);
+int		ft_isvector(char *c, int (*func)());
+int		data_checker(char *line);
+int		R_checker(char *line);
+int		A_checker(char *line);
+int		c_checker(char *line);
+int		l_checker(char *line);
+int		sp_checker(char *line);
+int		pl_checker(char *line);
+int		sq_checker(char *line);
+int		cy_checker(char *line);
+int		tr_checker(char *line);
+void	errorPrinter(int id);
 
 /*
 ** -------------------------------------------------------

@@ -1,26 +1,28 @@
 #include "miniRT.h"
 
-int data_checker( char **data)
+int data_checker(char *line)
 {
     int i;
+	char	**data;
+	data = ft_split_whitespaces(line);
 	i = data_id(data);
     if (i == 0)
-		R_insertion(D, data);
+		return R_checker(line);
 	else if(i == 1)
-		A_insertion(D, data);
-	else if(i == 2){
-		c_insertion(D, data);}
-	else if(i == 3){
-		l_insertion(D, data);}
-	else if(i == 4){
-		sp_insertion(D, data);}
+		return A_checker(line);
+	else if(i == 2)
+		return c_checker(line);
+	else if(i == 3)
+		return l_checker(line);
+	else if(i == 4)
+		return sp_checker(line);
 	else if(i == 5)
-		pl_insertion(D, data);
+		return pl_checker(line);
 	else if(i == 6)
-		sq_insertion(D, data);
+		return sq_checker(line);
 	else if(i == 7)
-		cy_insertion(D, data);
+		return cy_checker(line);
 	else if(i == 8)
-		tr_insertion(D, data);
+		return tr_checker(line);
     return (-1);
 }
