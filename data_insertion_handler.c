@@ -45,4 +45,5 @@ void	data_insertion(t_data *D, char **data)
 		cy_insertion(D, data);
 	else if(i == 8)
 		tr_insertion(D, data);
+	return (-1);
 }

@@ -192,9 +192,23 @@ void objectsDebugger(t_data d);
 */
 
 /*
+** --------------- CHECKING FUNCTION ----------------------
+*/
+
+int		ft_isdigit(int c);
+int		ft_isint(char *c);
+int		ft_isfloat(char *c);
+int		ft_isvector(char *c);
+
+/*
+** -------------------------------------------------------
+*/
+
+/*
 ** --------------- PARSING FUNCTION ----------------------
 */
 
+int			ft_nbr_words(char *str, char c);
 void		*ft_memcpy(void *dst, const void *src, size_t n);
 size_t		ft_strlen(const char *s);
 char		*ft_substr(char const *src, unsigned int start, size_t n);
@@ -202,6 +216,7 @@ char		*ft_strchr(char *str, int c);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			get_next_line(int fd, char **line);
 char		**ft_split(char const *s, char c);
+char		**ft_split_whitespaces(char *str);
 int			data_id(char **data);
 void		data_insertion(t_data *D, char **data);
 void		R_insertion(t_data *D, char **data);
