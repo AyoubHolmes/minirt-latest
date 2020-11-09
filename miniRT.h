@@ -132,6 +132,13 @@ typedef struct s_main
 	t_window w;
 }t_main;
 
+typedef struct s_err
+{
+	int isChecked;
+	int line;
+}t_err;
+
+
 
 /*
 ** ----------------------------
@@ -213,7 +220,8 @@ int		pl_checker(char *line);
 int		sq_checker(char *line);
 int		cy_checker(char *line);
 int		tr_checker(char *line);
-void	errorPrinter(int id);
+int		ft_putstr_fd(char *s, int fd);
+void	errorPrinter(t_err err);
 
 /*
 ** -------------------------------------------------------

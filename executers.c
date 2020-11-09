@@ -10,8 +10,8 @@ t_vector light_dif_spec(t_vector newStart, t_vector N, t_vector V, t_objects *li
 	while (l != NULL)
 	{
 		light = *(t_Light*)l->content;
-		t_vector L = make_unit_vector(subtract(light.light_pos, newStart));
-		t_vector R1 = make_unit_vector(subtract(multiple(2 * scalar(N, L), N), L));
+		t_vector L = make_unit_vector(substract(light.light_pos, newStart));
+		t_vector R1 = make_unit_vector(substract(multiple(2 * scalar(N, L), N), L));
 		diffuse = add(diffuse, color_diffuse(multiple((double)1 / 255, color), light.light_color, L, N, light.brightness));
 		diffuse = add(diffuse, color_spec(multiple((double)1 / 255, light.light_color), R1, V, light.brightness));
 		l = l->next;

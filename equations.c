@@ -3,14 +3,14 @@
 double equationSphere(ray R, t_objects *obj, double *distance)
 {
 	t_Sphere	*sp = ((t_Sphere*)obj->content);
-	t_vector oc = subtract(R.A, sp->sphere_center);
+	t_vector oc = substract(R.A, sp->sphere_center);
 	double a = scalar(R.B, R.B);
 	double b = 2.0 * scalar(oc, R.B);
 	double c = scalar(oc, oc) - ((double)(sp->sphere_diametre / 2) * (double)(sp->sphere_diametre / 2));
 	double dis = (b * b) - 4 * a * c;
 	double t;
 
-	oc = subtract(R.A, sp->sphere_center);
+	oc = substract(R.A, sp->sphere_center);
 	a = scalar(R.B, R.B);
 	if (dis < 0)
 	{
@@ -31,7 +31,7 @@ double equationSphere(ray R, t_objects *obj, double *distance)
 double equationPlane(ray R, t_objects *obj,double *distance)
 {
 	t_Plane *pl = ((t_Plane*)obj->content);
-	t_vector oc = subtract(R.A, pl->plane_center);
+	t_vector oc = substract(R.A, pl->plane_center);
 	pl->plane_norm = make_unit_vector(pl->plane_norm);
 	double x = scalar(R.B, pl->plane_norm);
 	double y = scalar(oc, pl->plane_norm);
@@ -51,7 +51,7 @@ double equationPlane(ray R, t_objects *obj,double *distance)
 double equationSquare(ray R, t_objects *obj,double *distance)
 {
 	t_Square *sq = ((t_Square*)obj->content);
-	t_vector oc = subtract(R.A, sq->square_center);
+	t_vector oc = substract(R.A, sq->square_center);
 	double x = scalar(R.B, make_unit_vector(sq->square_norm));
 	double y = scalar(oc, make_unit_vector(sq->square_norm));
 	double t;
@@ -59,7 +59,7 @@ double equationSquare(ray R, t_objects *obj,double *distance)
 	{
 		t = -y / x;
 		t_vector v = line_point(R, t);
-		oc = subtract(sq->square_center, v);
+		oc = substract(sq->square_center, v);
 		if (fabs(oc.x)<= (double)(sq->size / 2) && fabs(oc.y)<= (double)(sq->size / 2) && fabs(oc.z)<= (double)(sq->size / 2)&& t <= *distance && t > 0)
 		{
 			*distance = t;
@@ -86,7 +86,7 @@ t_passage_cy equationCylinder(ray R, t_objects *obj,double *distance)
 	pass.t = -1;
 	cy = ((t_Cylinder*)obj->content);
 	cy->cylinder_norm = make_unit_vector(cy->cylinder_norm);
-	oc = subtract(R.A, cy->cylinder_center);
+	oc = substract(R.A, cy->cylinder_center);
 	a = scalar(R.B, R.B) - (double)(scalar(R.B, cy->cylinder_norm) \
 		* scalar(R.B, cy->cylinder_norm));
 	b = 2 * (scalar(R.B, oc) - (scalar(R.B, cy->cylinder_norm) \
@@ -112,7 +112,7 @@ t_passage_cy equationCylinder(ray R, t_objects *obj,double *distance)
 				if (t2 <= *distance && t2 >= 0)
 				{
 					pass.t = t2;
-					pass.N = subtract(subtract(line_point(R, t1), cy->cylinder_center), \
+					pass.N = substract(substract(line_point(R, t1), cy->cylinder_center), \
 							multiple(m2, cy->cylinder_norm));
 					pass.N = make_unit_vector(pass.N);
 				}
@@ -123,6 +123,43 @@ t_passage_cy equationCylinder(ray R, t_objects *obj,double *distance)
 }
 
 double equationTriangle(ray R, t_objects *obj,double *distance)
+{
+	double EPSILON = 0.0000001;
+	t_Triangle	*tr;
+	t_vector	edge1;
+	t_vector	edge2;
+	t_vector	h;
+	t_vector	s;
+	t_vector	q;
+	double		a;
+	double		f;
+	double		u;
+	double		v;
+	double		t;
+
+	tr = ((t_Triangle*)obj->content);
+	edge1 = substract(tr->second_point, tr->first_point);
+	edge2 = substract(tr->third_point, tr->first_point);
+	h = v_product(R.B, edge2);
+	a = scalar(edge1, h);
+	if (a > -EPSILON && a < EPSILON)
+		return -1;
+	f = (double)(1.0 / a);
+	s = substract(R.A, tr->first_point);
+	u = f * scalar(s, h);
+	if (u < 0.0 || u > 1.0)
+		return -1;
+	q = v_product(s, edge1);
+	v = f * scalar(R.B, q);
+	if (v < 0.0 || u + v > 1.0)
+        return -1;
+	t = f * scalar(edge2, q);
+	if (t > EPSILON)
+		return t;
+	return -1;
+}
+
+/*double equationTriangle(ray R, t_objects *obj,double *distance)
 {
 	double		matrix[2][2];
 	t_Triangle	*tr;
@@ -136,11 +173,11 @@ double equationTriangle(ray R, t_objects *obj,double *distance)
 	double		det_matrix;
 
 	tr = ((t_Triangle*)obj->content);
-	V1 = subtract(tr->second_point, tr->first_point);
-	V2 = subtract(tr->third_point, tr->first_point);
+	V1 = substract(tr->second_point, tr->first_point);
+	V2 = substract(tr->third_point, tr->first_point);
 	V = make_unit_vector(v_product(V1, V2));
 	p = scalar(R.B, V);
-	q = scalar(subtract(R.A, tr->first_point), V);
+	q = scalar(substract(R.A, tr->first_point), V);
 	matrix[0][0] = V1.x;
 	matrix[0][1] = V2.x;
 	matrix[1][0] = V1.y;
@@ -153,7 +190,7 @@ double equationTriangle(ray R, t_objects *obj,double *distance)
 		matrix[0][1] = (double)((matrix[0][1] * -1) / det_matrix);
 		matrix[1][0] = (double)((matrix[1][0] * -1) / det_matrix);
 		matrix[1][1] = (double)(matrix[0][0] / det_matrix);
-		P = subtract(line_point(R, t), tr->first_point);
+		P = substract(line_point(R, t), tr->first_point);
 		p = (double)(P.x * matrix[0][0]) + (double)(P.y * matrix[0][1]);
 		q = (double)(P.x * matrix[1][0]) + (double)(P.y * matrix[1][1]);  
 		
@@ -166,7 +203,7 @@ double equationTriangle(ray R, t_objects *obj,double *distance)
 	return -1;
 }
 
-/*double equationTriangle(ray R, t_objects *obj,double *distance)
+double equationTriangle(ray R, t_objects *obj,double *distance)
 {
 	t_Triangle	*tr;
 	t_vector	V1;
@@ -180,9 +217,9 @@ double equationTriangle(ray R, t_objects *obj,double *distance)
 	double		t;
 
 	tr = ((t_Triangle*)obj->content);
-	V1 = subtract(tr->first_point, tr->second_point);
-	V2 = subtract(tr->third_point, tr->second_point);
-	V3 = subtract(tr->third_point, tr->first_point);
+	V1 = substract(tr->first_point, tr->second_point);
+	V2 = substract(tr->third_point, tr->second_point);
+	V3 = substract(tr->third_point, tr->first_point);
 	V = make_unit_vector(v_product(V1, V2));
 	d = scalar(V, V1); 
 	x = scalar(R.B, V);

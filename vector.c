@@ -27,7 +27,7 @@ t_vector minus(t_vector v1, t_vector v2)
     return (v3);
 }
 
-t_vector subtract(t_vector v1, t_vector v2)
+t_vector substract(t_vector v1, t_vector v2)
 {
     t_vector v3;
     v3.x = v1.x - v2.x;

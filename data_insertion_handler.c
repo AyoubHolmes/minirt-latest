@@ -2,6 +2,8 @@
 
 int		data_id(char **data)
 {
+	if(data[0][0] == '#')
+		return (-2);
 	if(data[0][0] == 'R' && ft_strlen(data[0]) == 1)
 		return (0);
 	else if(data[0][0] == 'A' && ft_strlen(data[0])== 1)

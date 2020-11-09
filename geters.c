@@ -57,8 +57,8 @@ int			shadowHandler(t_vector A, t_vector B, t_vector C)
 	double a;
 	double b;
 
-	a = squared_length(subtract(B, A));
-	b = squared_length(subtract(C, A));
+	a = squared_length(substract(B, A));
+	b = squared_length(substract(C, A));
 	if (a > b)
 		return (1);
 	return (0);
@@ -82,11 +82,12 @@ int			interShadowUpgraded(t_p_shadow  t_shadow, t_objects *p, t_objects *lights,
     l = lights;
 	while (l != NULL)
 	{
-		r.B = make_unit_vector(approCorrector(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart)));
+		r.B = make_unit_vector(approCorrector(\
+			substract((*(t_Light*)l->content).light_pos, t_shadow.newStart)));
 		if (p->id == 4)
 		{
-			A = length(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
-			B = length(subtract((*(t_Sphere*)p->content).sphere_center, t_shadow.newStart));
+			A = length(substract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
+			B = length(substract((*(t_Sphere*)p->content).sphere_center, t_shadow.newStart));
 			t = equationSphere(r, p, d_shadow);
 			if (t >= 0 && t <= *d_shadow && A > B)
 			{
@@ -97,8 +98,8 @@ int			interShadowUpgraded(t_p_shadow  t_shadow, t_objects *p, t_objects *lights,
 		}
 		if (p->id == 5)
 		{
-			A = length(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
-			B = length(subtract((*(t_Plane*)p->content).plane_center, t_shadow.newStart));
+			A = length(substract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
+			B = length(substract((*(t_Plane*)p->content).plane_center, t_shadow.newStart));
 			t = equationPlane(r, p, d_shadow);
 			if (t >= 0 && t <= *d_shadow && A > B)
 			{
@@ -109,8 +110,8 @@ int			interShadowUpgraded(t_p_shadow  t_shadow, t_objects *p, t_objects *lights,
 		}
 		if (p->id == 6)
 		{
-			A = length(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
-			B = length(subtract((*(t_Square*)p->content).square_center, t_shadow.newStart));
+			A = length(substract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
+			B = length(substract((*(t_Square*)p->content).square_center, t_shadow.newStart));
 			t = equationSquare(r, p, d_shadow);
 			if (t >= 0 && t <= *d_shadow && A > B)
 			{
@@ -121,8 +122,8 @@ int			interShadowUpgraded(t_p_shadow  t_shadow, t_objects *p, t_objects *lights,
 		}
 		if (p->id == 7)
 		{
-			A = length(subtract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
-			B = length(subtract((*(t_Cylinder*)p->content).cylinder_center, t_shadow.newStart));
+			A = length(substract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
+			B = length(substract((*(t_Cylinder*)p->content).cylinder_center, t_shadow.newStart));
 			t = equationCylinder(r, p, d_shadow).t;
 			if (t >= 0 && t <= *d_shadow && A > B)
 			{

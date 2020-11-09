@@ -11,7 +11,7 @@ int sphereShadowHandler(t_vector newStart, t_objects *p, t_objects *lights, int 
     l = lights;
     while (l != NULL)
     {
-         r.B = subtract((*(t_Light*)l->content).light_pos, newStart);
+         r.B = substract((*(t_Light*)l->content).light_pos, newStart);
         t = equationSphere(r, p, d_shadow);
         if (t > 0)
         {
@@ -34,7 +34,7 @@ int planeShadowHandler(t_vector newStart, t_objects *p, t_objects *lights, int c
     l = lights;
     while (l != NULL)
     {
-        r.B = subtract((*(t_Light*)l->content).light_pos, newStart);
+        r.B = substract((*(t_Light*)l->content).light_pos, newStart);
         t = equationPlane(r, p, d_shadow);
         if (t > 0)
         {
@@ -57,7 +57,7 @@ int squareShadowHandler(t_vector newStart, t_objects *p, t_objects *lights, int 
     l = lights;
     while (l != NULL)
     {
-        r.B = subtract((*(t_Light*)l->content).light_pos, newStart);
+        r.B = substract((*(t_Light*)l->content).light_pos, newStart);
         t = equationSquare(r, p, d_shadow);
         if (t > 0)
         {
@@ -80,7 +80,7 @@ int cylinderShadowHandler(t_vector newStart, t_objects *p,  t_objects *lights, i
     l = lights;
     while (l != NULL)
     {
-        r.B = subtract((*(t_Light*)l->content).light_pos, newStart);
+        r.B = substract((*(t_Light*)l->content).light_pos, newStart);
         pass = equationCylinder(r, p, d_shadow);
         if (pass.t >= 0)
         {

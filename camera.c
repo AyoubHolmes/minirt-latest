@@ -28,7 +28,7 @@ ray get_ray(t_data d, double u, double v)
 {
     t_camera cam = iCam(d.cameras->cam.view_point, d.cameras->cam.cam_normal,\
 			 d.cameras->cam.fov, d.R.x, d.R.y);
-    return initialize_ray(cam.origine, subtract(add(cam.start_point, \
+    return initialize_ray(cam.origine, substract(add(cam.start_point, \
         add(multiple(u, cam.horizontal), multiple(v, cam.vertical))), cam.origine));
 }
 
@@ -43,12 +43,12 @@ t_camera iCam(t_vector lookfrom, t_vector lookat, \
     double half_height = tan(theta/2);
     double half_width = aspect * half_height;
     cam.origine = lookfrom;
-    w = make_unit_vector(subtract(cam.origine, lookat));
+    w = make_unit_vector(substract(cam.origine, lookat));
     u = make_unit_vector(v_product(w, up));
     v = v_product(w, u);
-    t_vector v1 = subtract(cam.origine, multiple(half_width, u));
+    t_vector v1 = substract(cam.origine, multiple(half_width, u));
     t_vector v2 = add(multiple(half_height, v), w);
-    cam.start_point = subtract(v1, v2);
+    cam.start_point = substract(v1, v2);
     cam.horizontal = multiple(2 * half_width, u);
     cam.vertical = multiple(2 * half_height, v);
     return (cam);

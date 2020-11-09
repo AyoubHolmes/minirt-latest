@@ -5,7 +5,10 @@ int data_checker(char *line)
     int i;
 	char	**data;
 	data = ft_split_whitespaces(line);
+	
 	i = data_id(data);
+	if (i == -2)
+		return (1);
     if (i == 0)
 		return R_checker(line);
 	else if(i == 1)

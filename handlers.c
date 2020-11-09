@@ -9,7 +9,7 @@ int sphereHandler(ray r, t_objects *p, double *distance, double *t, t_objects *l
     if (*t > 0)
     {
         t_shadow->newStart = line_point(r, *t);
-        N = make_unit_vector(subtract(t_shadow->newStart ,(*(t_Sphere*)p->content).sphere_center));
+        N = make_unit_vector(substract(t_shadow->newStart ,(*(t_Sphere*)p->content).sphere_center));
 		t_shadow->color_shadow = (*(t_Sphere*)p->content).color_sphere;
 		t_shadow->object_position = (*(t_Sphere*)p->content).sphere_center;
 		color = colorCalculator(r, t_shadow->color_shadow, *t, lights, N);
@@ -79,8 +79,8 @@ int triangleHandler(ray r, t_objects *p, double *distance, double *t, t_objects 
     if (*t > 0)
     {
 		tr = *(t_Triangle*)p->content;
-		t_vector V1 = subtract(tr.second_point, tr.first_point);
-		t_vector V2 = subtract(tr.third_point, tr.first_point);
+		t_vector V1 = substract(tr.second_point, tr.first_point);
+		t_vector V2 = substract(tr.third_point, tr.first_point);
 		t_vector V = make_unit_vector(v_product(V1, V2));
 		if (scalar(r.B, V) > 0)
 			V = multiple(-1, V);	
