@@ -82,8 +82,8 @@ int			interShadowUpgraded(t_p_shadow  t_shadow, t_objects *p, t_objects *lights,
     l = lights;
 	while (l != NULL)
 	{
-		r.B = make_unit_vector(approCorrector(\
-			substract((*(t_Light*)l->content).light_pos, t_shadow.newStart)));
+		r.B = make_unit_vector(\
+			substract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
 		if (p->id == 4)
 		{
 			A = length(substract((*(t_Light*)l->content).light_pos, t_shadow.newStart));
@@ -137,14 +137,59 @@ int			interShadowUpgraded(t_p_shadow  t_shadow, t_objects *p, t_objects *lights,
 	return (-1);
 }
 
+int			shadow_cheker(t_vector a, t_vector b, t_vector c)
+{
+	double A;
+	double B;
+
+
+	A = length(substract(b, a));
+	B = length(substract(c, a));
+	return (A > B);
+}
+
+double		interShadowFuncs(t_p_shadow  *t_shadow, t_objects *p, t_objects *lights, double *d_shadow)
+{
+	double t;
+	t_objects *l;
+	ray r;
+
+	t = -1;
+	r.A = approCorrector(t_shadow->newStart);
+	l = lights;
+	while (l != NULL)
+	{
+		t_shadow->light_pos = (*(t_Light*)l->content).light_pos;
+		r.B = make_unit_vector(\
+			substract(t_shadow->light_pos, t_shadow->newStart));
+		if (p->id == 4)
+			t = equationSphere(r, p, d_shadow);
+		if (p->id == 5)
+			t = equationPlane(r, p, d_shadow);
+		if (p->id == 6)
+			t = equationSquare(r, p, d_shadow);
+		if (p->id == 7)
+			t = equationCylinder(r, p, d_shadow).t;
+		if (p->id == 8)
+			t = equationTriangle(r, p, d_shadow);
+		if (t >= 0 && t <= *d_shadow )
+		{
+			t_shadow->object_pos = line_point(r, t);
+			return (t);
+		}
+		l = l->next;
+	}
+	return (-1);
+}
 
 int			getPixelColor(t_objects *obj, ray r, double *distance, double *d_shadow, t_objects *lights)
 {
 	int			color;
-	int			colorShadow;
+	t_vector	colorShadow;
     t_objects	*p;
 	t_objects	*p2;
 	double		t;
+	double		t2;
 	t_p_shadow	t_shadow;
 
 	color = 0;
@@ -159,10 +204,15 @@ int			getPixelColor(t_objects *obj, ray r, double *distance, double *d_shadow, t
 		{
 			if (p2 != p)
 			{
-				colorShadow = interShadowUpgraded(t_shadow, p2, lights, d_shadow);
-				//colorShadow = interShadow(line_point(r, t), p2, lights, color, d_shadow);
-				if (colorShadow != -1)
-					color = colorShadow;
+				t2 = interShadowFuncs(&t_shadow, p2, lights, d_shadow);
+				if (t2 > 0)
+				{
+					if (shadow_cheker(t_shadow.newStart, t_shadow.light_pos, t_shadow.object_pos))
+					{
+						colorShadow = multiple(0.5, multiple((double)1 / 255, t_shadow.color_shadow));
+						color = (rgb_maker(color_clamping(colorShadow)));
+					}
+				}
 			}
 			p2 = p2->next;
 		}

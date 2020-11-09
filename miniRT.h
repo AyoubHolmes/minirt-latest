@@ -123,7 +123,8 @@ typedef struct s_p_shadow
 {
 	t_vector newStart;
 	t_vector color_shadow;
-	t_vector object_position;
+	t_vector light_pos;
+	t_vector object_pos;
 }t_p_shadow;
 
 typedef struct s_main

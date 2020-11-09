@@ -11,7 +11,6 @@ int sphereHandler(ray r, t_objects *p, double *distance, double *t, t_objects *l
         t_shadow->newStart = line_point(r, *t);
         N = make_unit_vector(substract(t_shadow->newStart ,(*(t_Sphere*)p->content).sphere_center));
 		t_shadow->color_shadow = (*(t_Sphere*)p->content).color_sphere;
-		t_shadow->object_position = (*(t_Sphere*)p->content).sphere_center;
 		color = colorCalculator(r, t_shadow->color_shadow, *t, lights, N);
     }
     return (color);
@@ -27,7 +26,6 @@ int planeHandler(ray r, t_objects *p, double *distance, double *t, t_objects *li
 		t_shadow->newStart = line_point(r, *t);
 		pl = *(t_Plane*)p->content;
 		t_shadow->color_shadow = pl.color_plane;
-		t_shadow->object_position = pl.plane_center;
     	if (scalar(r.B, pl.plane_norm) > 0)
 			pl.plane_norm = multiple(-1, pl.plane_norm);	
 		color = colorCalculator(r, pl.color_plane, *t, lights, pl.plane_norm);
@@ -45,7 +43,6 @@ int squareHandler(ray r, t_objects *p, double *distance, double *t, t_objects *l
 		t_shadow->newStart = line_point(r, *t);
 		sq = *((t_Square*)p->content);
 		t_shadow->color_shadow = sq.color_square;
-		t_shadow->object_position = sq.square_center;
 		if (scalar(r.B, sq.square_norm) > 0)
 			sq.square_norm = multiple(-1, sq.square_norm);	
 		color = colorCalculator(r, sq.color_square, *t, lights, sq.square_norm);
@@ -65,7 +62,6 @@ int cylinderHandler(ray r, t_objects *p, double *distance, double *t, t_objects 
 		t_shadow->newStart = line_point(r, *t);
 		cy = *((t_Cylinder*)p->content);
 		t_shadow->color_shadow = cy.cylinder_color;
-		t_shadow->object_position = cy.cylinder_center;
 		color = colorCalculator(r, cy.cylinder_color, *t, lights, pass.N);
 	}
     return (color);
